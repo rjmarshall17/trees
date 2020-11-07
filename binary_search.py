@@ -73,7 +73,7 @@ class BinarySearchTree:
             ret = self.__search__(value,self.root)
             print("Got %s back from internal search" % ret)
             return ret
-        return True
+        return False
             
 def fill_tree(tree,num_elements=100,max_int=1000):
     from random import randint
