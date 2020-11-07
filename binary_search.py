@@ -55,7 +55,7 @@ class BinarySearchTree:
     def __search__(self,value,current_node):
         print("Checking value %d against current node value: %d" % (value,current_node.value))
         if value == current_node.value:
-            print("__search__: Found matching value: %d" % current_node.value)
+            print("__search__: Found matching value: %d, should return True" % current_node.value)
             return True
         elif value < current_node.value and current_node.left_child is not None:
             print("Calling __search__ with left child")
