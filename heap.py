@@ -3,8 +3,9 @@
 """
 Created on Mon Nov 23 10:40:54 2020
 
-@author: robmarshall
+@author: Rob Marshall
 """
+
 
 class MyMinHeap:
     """A heap can be represented as a "complete" tree. All the levels are full
@@ -30,44 +31,55 @@ list.
 """
 
     def __init__(self, array):
-        self.heap = array
+        self.heap = array[:]
         self.buildHeap()
-    
+
+    def __repr__(self):
+        return list(self.heap)
+
+    def __len__(self):
+        return len(self.heap)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.empty():
+            raise StopIteration
+        return self.remove()
+
     # Runs in O(N) time O(1) space, done in place
     def buildHeap(self):
-        parentIdx = (len(self.heap) - 1) // 2
-        for curIdx in range(parentIdx,-1,-1):
-            self.siftDown(curIdx, len(self.heap) - 1)
-    
+        parent_idx = (len(self.heap) - 1) // 2
+        for cur_idx in range(parent_idx, -1, -1):
+            self.siftDown(cur_idx, len(self.heap) - 1)
+
     # Runs in O(logN)
-    def siftDown(self, curIdx, endIdx):
-        child1Idx = curIdx * 2 + 1
-        print("endIdx=%d" % endIdx)
-        while child1Idx <= endIdx:
-            print("heap at top of while: %s" % self.heap)
-            child2Idx = curIdx * 2 + 2 if curIdx * 2 + 2 < endIdx else -1
+    def siftDown(self, cur_idx, end_idx):
+        child1_idx = cur_idx * 2 + 1
+        while child1_idx <= end_idx:
+            child2_idx = cur_idx * 2 + 2 if cur_idx * 2 + 2 <= end_idx else -1
             # For max heap change < to >
-            print("child1Idx=%d child2Idx=%d" % (child1Idx,child2Idx))
-            if child2Idx != -1 and self.heap[child2Idx] < self.heap[child1Idx]:
-                idxToSwap = child2Idx
+            if child2_idx != -1 and self.heap[child2_idx] < self.heap[child1_idx]:
+                idx2swap = child2_idx
             else:
-                idxToSwap = child1Idx
+                idx2swap = child1_idx
             # For max heap change < to >
-            if self.heap[idxToSwap] < self.heap[curIdx]:
-                self.swap(curIdx,idxToSwap)
-                curIdx = idxToSwap
-                child1Idx = curIdx * 2 + 1
+            if self.heap[idx2swap] < self.heap[cur_idx]:
+                self.swap(cur_idx, idx2swap)
+                cur_idx = idx2swap
+                child1_idx = cur_idx * 2 + 1
             else:
                 break
     
     # Runs in O(logN)
-    def siftUp(self, curIdx):
-        parentIdx = (curIdx - 1) // 2
-        # For max heap change comparison if curIdx and parentIx to >
-        while curIdx > 0 and self.heap(curIdx) < self.heap(parentIdx):
-            self.swap(curIdx, parentIdx)
-            curIdx = parentIdx
-            parentIdx = (curIdx - 1) // 2
+    def siftUp(self, cur_idx):
+        parent_idx = (cur_idx - 1) // 2
+        # For max heap change comparison if cur_idx and parentIx to >
+        while cur_idx > 0 and self.heap[cur_idx] < self.heap[parent_idx]:
+            self.swap(cur_idx, parent_idx)
+            cur_idx = parent_idx
+            parent_idx = (cur_idx - 1) // 2
     
     def peek(self):
         return self.heap[0]
@@ -80,15 +92,12 @@ list.
         self.siftUp(len(self.heap) - 1)
         
     def remove(self):
-        if self.heap == []:
+        if not self.heap:
             return None
-        print("Heap at start of remove: %s" % self.heap)
-        self.swap(0,len(self.heap) - 1)
-        print("Heap after swap root and end: %s" % self.heap)
+        self.swap(0, len(self.heap) - 1)
         ret = self.heap.pop()
         self.siftDown(0, len(self.heap) - 1)
-        print("Heap after siftDown: %s" % self.heap)
         return ret
     
-    def swap(self,i,j):
+    def swap(self, i, j):
         self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
