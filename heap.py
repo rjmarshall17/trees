@@ -30,12 +30,13 @@ number, for a min heap, or the largest number, for a max heap, in the tree/
 list.
 """
 
-    def __init__(self, array):
+    def __init__(self, array, min=True):
         self.heap = array[:]
+        self.min = min
         self.buildHeap()
 
     def __repr__(self):
-        return list(self.heap)
+        return str(list(self.heap))
 
     def __len__(self):
         return len(self.heap)
@@ -52,10 +53,13 @@ list.
     def buildHeap(self):
         parent_idx = (len(self.heap) - 1) // 2
         for cur_idx in range(parent_idx, -1, -1):
-            self.siftDown(cur_idx, len(self.heap) - 1)
+            if self.min:
+                self.minSiftDown(cur_idx, len(self.heap) - 1)
+            else:
+                self.maxSiftDown(cur_idx, len(self.heap) - 1)
 
     # Runs in O(logN)
-    def siftDown(self, cur_idx, end_idx):
+    def minSiftDown(self, cur_idx, end_idx):
         child1_idx = cur_idx * 2 + 1
         while child1_idx <= end_idx:
             child2_idx = cur_idx * 2 + 2 if cur_idx * 2 + 2 <= end_idx else -1
@@ -71,12 +75,39 @@ list.
                 child1_idx = cur_idx * 2 + 1
             else:
                 break
-    
+
     # Runs in O(logN)
-    def siftUp(self, cur_idx):
+    def maxSiftDown(self, cur_idx, end_idx):
+        child1_idx = cur_idx * 2 + 1
+        while child1_idx <= end_idx:
+            child2_idx = cur_idx * 2 + 2 if cur_idx * 2 + 2 <= end_idx else -1
+            # For max heap change < to >
+            if child2_idx != -1 and self.heap[child2_idx] > self.heap[child1_idx]:
+                idx2swap = child2_idx
+            else:
+                idx2swap = child1_idx
+            # For max heap change < to >
+            if self.heap[idx2swap] > self.heap[cur_idx]:
+                self.swap(cur_idx, idx2swap)
+                cur_idx = idx2swap
+                child1_idx = cur_idx * 2 + 1
+            else:
+                break
+
+    # Runs in O(logN)
+    def minSiftUp(self, cur_idx):
         parent_idx = (cur_idx - 1) // 2
         # For max heap change comparison if cur_idx and parentIx to >
         while cur_idx > 0 and self.heap[cur_idx] < self.heap[parent_idx]:
+            self.swap(cur_idx, parent_idx)
+            cur_idx = parent_idx
+            parent_idx = (cur_idx - 1) // 2
+
+    # Runs in O(logN)
+    def maxSiftUp(self, cur_idx):
+        parent_idx = (cur_idx - 1) // 2
+        # For max heap change comparison if cur_idx and parentIx to >
+        while cur_idx > 0 and self.heap[cur_idx] > self.heap[parent_idx]:
             self.swap(cur_idx, parent_idx)
             cur_idx = parent_idx
             parent_idx = (cur_idx - 1) // 2
@@ -89,14 +120,20 @@ list.
     
     def insert(self, value):
         self.heap.append(value)
-        self.siftUp(len(self.heap) - 1)
+        if self.min:
+            self.minSiftUp(len(self.heap) - 1)
+        else:
+            self.maxSiftUp(len(self.heap) - 1)
         
     def remove(self):
         if not self.heap:
             return None
         self.swap(0, len(self.heap) - 1)
         ret = self.heap.pop()
-        self.siftDown(0, len(self.heap) - 1)
+        if self.min:
+            self.minSiftDown(0, len(self.heap) - 1)
+        else:
+            self.maxSiftDown(0, len(self.heap) - 1)
         return ret
     
     def swap(self, i, j):
