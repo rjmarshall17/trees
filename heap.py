@@ -6,6 +6,8 @@ Created on Mon Nov 23 10:40:54 2020
 @author: Rob Marshall
 """
 
+SORTED_LIST = [8, 9, 13, 26, 29, 32, 36, 49, 58, 62, 65, 67, 69, 73, 75, 83, 85, 87, 89, 91, 92, 95, 96, 98]
+
 
 class MyMinHeap:
     """A heap can be represented as a "complete" tree. All the levels are full
@@ -28,6 +30,8 @@ Parent = (i - 1)//2
 The list, or tree, is not sorted but the root node is either the smallest
 number, for a min heap, or the largest number, for a max heap, in the tree/
 list.
+
+Time complexity: for remove/get: O(1) for insert O(logN)
 """
 
     def __init__(self, array, min=True):
@@ -138,3 +142,16 @@ list.
     
     def swap(self, i, j):
         self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+
+if __name__ == '__main__':
+    arr_in = [96, 85, 95, 92, 62, 26, 89, 87, 29, 58, 83, 75, 13, 8, 91, 9, 98, 65, 32, 69, 36, 73, 67, 49]
+    print("Original list: %s" % arr_in)
+    h = MyMinHeap(arr_in)
+    print(" The min heap: %s" % h)
+    print("Min Heap output:")
+    output = []
+    while not h.empty():
+        output.append(h.remove())
+    print(output)
+    assert output == SORTED_LIST, "The min heap is incorrect"
