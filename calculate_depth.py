@@ -10,9 +10,10 @@ class BinaryTree:
         self.right = None
 
     def __str__(self):
-        ret = self.value
-        ret += " left: " + self.left.value if self.left is not None else "None"
-        ret += " right: " + self.right.value if self.right is not None else "None"
+        ret = str(self.value)
+        ret += " left: " + str(self.left.value) if self.left is not None else " None"
+        ret += " right: " + str(self.right.value) if self.right is not None else " None"
+        return ret
 
 
 TREES = [
@@ -52,9 +53,15 @@ def buildTree(tree):
     tree_nodes = {}
     for node in tree['nodes']:
         tree_nodes[node['id']] = BinaryTree(node['value'])
-    
-
+        if node['left'] is not None:
+            tree_nodes[node['id']].left = BinaryTree(node['left'])
+        if node['right'] is not None:
+            tree_nodes[node['id']].right = BinaryTree(node['right'])
+        print(tree_nodes[node['id']])
+    return tree_nodes, tree['root']
 
 if __name__ == '__main__':
     for tree in TREES:
-        buildTree(tree['tree'])
+        the_tree, root = buildTree(tree['tree'])
+        result = nodeDepths(the_tree)
+        print("The result is: %d" % result)
