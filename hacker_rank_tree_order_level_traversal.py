@@ -122,8 +122,6 @@ if __name__ == '__main__':
     for i in range(t):
         tree.create(arr[i])
 
-    levelOrder(tree.root)
-
     results = levelOrder(tree.root)
 
     fptr.write(' '.join(map(str, results)))
