@@ -99,30 +99,39 @@ def levelOrder(root):
         levels_traversed += 1
         # Time complexity is: O(N-K) where K is the index to be popped
         current_node = level_queue.pop(0)
-        results.append(str(current_node.info))
+        if isinstance(current_node.info, list):
+            results.append(str(current_node.info[0]))
+        else:
+            results.append(str(current_node.info))
         if current_node.left is not None:
             level_queue.append(current_node.left)
         if current_node.right is not None:
             level_queue.append(current_node.right)
-    print("The results are: %s" % results)
-    print(' '.join([str(x) for x in results]))
+    return results
+
 
 if __name__ == '__main__':
-    # fptr = open(os.environ['OUTPUT_PATH'], 'w')
-    # expected_output = os.environ['OUTPUT_PATH'].replace('input','expected_output')
-    #
-    bst = BinarySearchTree()
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    expected_output = os.environ['OUTPUT_PATH'].replace('output', 'expected_output')
 
-    queries_rows = int(input())
+    tree = BinarySearchTree()
+    t = int(input())
 
-    queries = []
+    arr = list(map(int, input().split()))
 
-    for _ in range(queries_rows):
-        bst.create(input().rstrip().split())
+    for i in range(t):
+        tree.create(arr[i])
 
-    levelOrder(bst.root)
+    levelOrder(tree.root)
 
-    # fptr.write(' '.join(map(str, result)))
-    # fptr.write('\n')
-    #
-    # fptr.close()
+    results = levelOrder(tree.root)
+
+    fptr.write(' '.join(map(str, results)))
+    fptr.write('\n')
+
+    fptr.close()
+    # print("         Output: >>%s<<" % ' '.join(map(str, results)))
+    # print("Expected output: >>%s<<" % open(expected_output, 'r').read().rstrip())
+
+    assert ' '.join(map(str, results)) == open(expected_output, 'r').read().rstrip()
+    print("Tests passed for: %s" % os.environ['OUTPUT_PATH'])
