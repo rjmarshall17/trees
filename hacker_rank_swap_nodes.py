@@ -191,6 +191,12 @@ class Node:
         self.left = None
         self.right = None
 
+    def __str__(self):
+        ret = str(self.value)
+        ret += " left: " + (str(self.left.value) if self.left is not None else "None")
+        ret += " right: " + (str(self.right.value) if self.right is not None else "None")
+        return ret
+
 
 #
 # The swapNodes function from the problem description.
@@ -215,29 +221,63 @@ def swapNodes(indexes_in, queries_in):
 
         return root_node
 
-    def swap(root_to_swap, k_to_swap, level, return_list):
-        if root_to_swap:
-            # If we are at the correct level, swap the nodes
-            if level % k_to_swap == 0:
-                root_to_swap.left, root_to_swap.right = root_to_swap.right, root_to_swap.left
+    # def swap_recursive(root_to_swap, k_to_swap, level, return_list):
+    #     if root_to_swap:
+    #         # If we are at the correct level, swap the nodes
+    #         if k_to_swap % level == 0:
+    #             root_to_swap.left, root_to_swap.right = root_to_swap.right, root_to_swap.left
+    #
+    #         # Do an in-order traversal
+    #         swap_recursive(root_to_swap.left, k_to_swap, level + 1, return_list)
+    #         print("Adding value: %d" % root_to_swap.value)
+    #         return_list.append(root_to_swap.value)
+    #         swap_recursive(root_to_swap.right, k_to_swap, level + 1, return_list)
 
-            # Do an in-order traversal
-            swap(root_to_swap.left, k_to_swap, level + 1, return_list)
-            return_list.append(root_to_swap.value)
-            swap(root_to_swap.right, k_to_swap, level + 1, return_list)
+    def swap_iterative(root_to_swap, k_to_swap):
+        # print("Using iterative")
+        print("The incoming value of k is: %d" % k)
+        level = 1
+        # print("The root to swap is: %s" % root_to_swap)
+        swap_queue = deque([root_to_swap])
+        return_deque = deque()
+        return_deque.append(root_to_swap.value)
+        while len(swap_queue) > 0:
+            current_node = swap_queue.popleft()
+            # print("For level %d current node is: %s" % (level, current_node))
+            if current_node:
+                print("The current node is: %s" % current_node)
+                if k_to_swap % level == 0:
+                    # print("Swapping at level %d" % level)
+                    current_node.left, current_node.right = current_node.right, current_node.left
+                    # print("Post swap, the current node is: %s" % current_node)
+                if current_node.left is not None:
+                    return_deque.appendleft(current_node.left.value)
+                if current_node.right is not None:
+                    return_deque.append(current_node.right.value)
+                swap_queue.append(current_node.left)
+                swap_queue.append(current_node.right)
+            level += 1
+        return list(return_deque)
 
     # Now create the tree using the supplied indexes
-    root = create(root, indexes_in)
+    tree_root = create(root, indexes_in)
 
     # Now process the queries which will swap nodes, k is the value
     # from the problem description used to denote the level for each
     # swap operation
-    results = []
+    return_results = []
     for k in queries_in:
-        swapped_values = []
-        swap(root, k, 1, swapped_values)
-        results.append(swapped_values)
-    return results
+        # recursive_swapped_values = []
+        # swap_recursive(tree_root, k, 1, recursive_swapped_values)
+        # return_results.append(recursive_swapped_values)
+        # PrintTree(tree_root)
+
+        return_results.append(swap_iterative(tree_root, k))
+
+        # print("The recursive swapped values are: %s" % recursive_swapped_values)
+        # print("The iterative swapped values are: %s" % iterative_swapped_values)
+        # print("The current return results is: %s" % return_results)
+    return return_results
 
 
 if __name__ == '__main__':
@@ -267,5 +307,7 @@ if __name__ == '__main__':
 
     results = '\n'.join([' '.join(map(str, x)) for x in result])
     expected_results = open(os.environ['OUTPUT_PATH'].replace('output','expected_output'), 'r').read()
+    print("The results are:\n>>%s<<" % results)
+    print("The expected results are:\n>>%s<<" % expected_results)
     assert results == expected_results
     print("The expected results:\n%s\nmatch the results:\n%s" % (expected_results, results))
