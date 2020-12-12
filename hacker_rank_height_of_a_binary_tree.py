@@ -72,12 +72,12 @@ There are 4 nodes in this path that are connected by 3 edges, meaning our binary
 tree's height = 3.
 """
 
+
 class Node:
     def __init__(self, info):
         self.info = info
         self.left = None
         self.right = None
-        self.level = None
 
     def __str__(self):
         return str(self.info)
@@ -88,7 +88,7 @@ class BinarySearchTree:
         self.root = None
 
     def create(self, val):
-        if self.root == None:
+        if self.root is None:
             self.root = Node(val)
         else:
             current = self.root
