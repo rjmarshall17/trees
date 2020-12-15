@@ -6,10 +6,11 @@ Created on Mon Nov 23 10:40:54 2020
 @author: Rob Marshall
 """
 
-SORTED_LIST = [8, 9, 13, 26, 29, 32, 36, 49, 58, 62, 65, 67, 69, 73, 75, 83, 85, 87, 89, 91, 92, 95, 96, 98]
+MINIMUM_HEAP_LIST = [8, 9, 13, 26, 29, 32, 36, 49, 58, 62, 65, 67, 69, 73, 75, 83, 85, 87, 89, 91, 92, 95, 96, 98]
+MAXIMUM_HEAP_LIST = [98, 96, 95, 92, 91, 89, 87, 85, 83, 75, 73, 69, 67, 65, 62, 58, 49, 36, 32, 29, 26, 13, 9, 8]
 
 
-class MyMinHeap:
+class MyHeap:
     """A heap can be represented as a "complete" tree. All the levels are full
 except the last level. For a min heap, every nodes value is <= the values of
 the child nodes. For a max heap, every nodes value is >= the values of its
@@ -31,7 +32,7 @@ The list, or tree, is not sorted but the root node is either the smallest
 number, for a min heap, or the largest number, for a max heap, in the tree/
 list.
 
-Time complexity: for remove/get: O(1) for insert O(logN)
+Time complexity: for pop/peek: O(1) for push O(logN)
 """
 
     def __init__(self, array, min=True):
@@ -74,7 +75,7 @@ Time complexity: for remove/get: O(1) for insert O(logN)
                 idx2swap = child1_idx
             # For max heap change < to >
             if self.heap[idx2swap] < self.heap[cur_idx]:
-                self.swap(cur_idx, idx2swap)
+                self.__swap__(cur_idx, idx2swap)
                 cur_idx = idx2swap
                 child1_idx = cur_idx * 2 + 1
             else:
@@ -92,7 +93,7 @@ Time complexity: for remove/get: O(1) for insert O(logN)
                 idx2swap = child1_idx
             # For max heap change < to >
             if self.heap[idx2swap] > self.heap[cur_idx]:
-                self.swap(cur_idx, idx2swap)
+                self.__swap__(cur_idx, idx2swap)
                 cur_idx = idx2swap
                 child1_idx = cur_idx * 2 + 1
             else:
@@ -103,7 +104,7 @@ Time complexity: for remove/get: O(1) for insert O(logN)
         parent_idx = (cur_idx - 1) // 2
         # For max heap change comparison if cur_idx and parentIx to >
         while cur_idx > 0 and self.heap[cur_idx] < self.heap[parent_idx]:
-            self.swap(cur_idx, parent_idx)
+            self.__swap__(cur_idx, parent_idx)
             cur_idx = parent_idx
             parent_idx = (cur_idx - 1) // 2
 
@@ -112,7 +113,7 @@ Time complexity: for remove/get: O(1) for insert O(logN)
         parent_idx = (cur_idx - 1) // 2
         # For max heap change comparison if cur_idx and parentIx to >
         while cur_idx > 0 and self.heap[cur_idx] > self.heap[parent_idx]:
-            self.swap(cur_idx, parent_idx)
+            self.__swap__(cur_idx, parent_idx)
             cur_idx = parent_idx
             parent_idx = (cur_idx - 1) // 2
     
@@ -122,17 +123,17 @@ Time complexity: for remove/get: O(1) for insert O(logN)
     def empty(self):
         return self.heap == []
     
-    def insert(self, value):
+    def push(self, value):
         self.heap.append(value)
         if self.min:
             self.minSiftUp(len(self.heap) - 1)
         else:
             self.maxSiftUp(len(self.heap) - 1)
         
-    def remove(self):
+    def pop(self):
         if not self.heap:
             return None
-        self.swap(0, len(self.heap) - 1)
+        self.__swap__(0, len(self.heap) - 1)
         ret = self.heap.pop()
         if self.min:
             self.minSiftDown(0, len(self.heap) - 1)
@@ -140,18 +141,31 @@ Time complexity: for remove/get: O(1) for insert O(logN)
             self.maxSiftDown(0, len(self.heap) - 1)
         return ret
     
-    def swap(self, i, j):
+    def __swap__(self, i, j):
         self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
 
 
 if __name__ == '__main__':
     arr_in = [96, 85, 95, 92, 62, 26, 89, 87, 29, 58, 83, 75, 13, 8, 91, 9, 98, 65, 32, 69, 36, 73, 67, 49]
     print("Original list: %s" % arr_in)
-    h = MyMinHeap(arr_in)
-    print(" The min heap: %s" % h)
+    minimum_heap = MyHeap(arr_in[:-10])
+    for item in arr_in[-10:]:
+        minimum_heap.push(item)
+    print(" The min heap: %s" % minimum_heap)
     print("Min Heap output:")
     output = []
-    while not h.empty():
-        output.append(h.remove())
+    while not minimum_heap.empty():
+        output.append(minimum_heap.pop())
     print(output)
-    assert output == SORTED_LIST, "The min heap is incorrect"
+    assert output == MINIMUM_HEAP_LIST, "The min heap is incorrect"
+    print("="*80)
+    maximum_heap = MyHeap(arr_in[:-10], min=False)
+    for item in arr_in[-10:]:
+        maximum_heap.push(item)
+    print(" The max heap: %s" % maximum_heap)
+    print("Max Heap output:")
+    output = []
+    while not maximum_heap.empty():
+        output.append(maximum_heap.pop())
+    print(output)
+    assert output == MAXIMUM_HEAP_LIST, "The min heap is incorrect"
