@@ -203,8 +203,9 @@ class Node:
 #     current = root
 #     stack = []  # initialize stack
 #     while True:
-#         # print("inOrder: Start of while loop, current: %s" % current)
-#         # print("inOrder: Start of while loop the stack (length: %d) is: %s" % (len(stack), ",".join([str(x) for x in stack])))
+#         print("inOrder: Start of while loop, current: %s" % current)
+#         print("inOrder: Start of while loop the stack (length: %d) is: %s" %
+#               (len(stack), ",".join([str(x) for x in stack])))
 #         # Reach the left most Node of the current Node
 #         if current is not None:
 #             # Place pointer to a tree node on the stack
@@ -216,7 +217,7 @@ class Node:
 #             # BackTrack from the empty subtree and visit the Node
 #         # at the top of the stack; however, if the stack is
 #         # empty you are done
-#         elif (stack):
+#         elif stack:
 #             current = stack.pop()
 #             print("inOrder: *** popped *** current: %s" % current)  # Python 3 printing
 #
@@ -251,13 +252,15 @@ def swapNodes(indexes_in, queries_in):
             # print("create: The current node is: %s" % current_node)
         return root_node
 
+    # This does a depth first search, i.e. in this specific instance an inorder
+    # traversal.
     def swap_recursive(root_to_swap, k_to_swap, level, return_list):
         if root_to_swap:
             # If we are at the correct level, swap the nodes
             if level % k_to_swap == 0:
                 root_to_swap.left, root_to_swap.right = root_to_swap.right, root_to_swap.left
 
-            # Do an in-order traversal
+            # Do an inorder traversal
             swap_recursive(root_to_swap.left, k_to_swap, level + 1, return_list)
             # print("Adding value: %d" % root_to_swap.value)
             return_list.append(root_to_swap.value)
@@ -282,7 +285,8 @@ def swapNodes(indexes_in, queries_in):
     #             if current_level % k_to_swap == 0:
     #                 # print("Swapping at current_level %d" % current_level)
     #                 current_node.left, current_node.right = current_node.right, current_node.left
-    #                 print("swap_iterative: Post swap, current_level=%d the current node is: %s" % (current_level, current_node))
+    #                 print("swap_iterative: Post swap, current_level=%d the current node is: %s" %
+    #                       (current_level, current_node))
     #             if current_node.left is not None:
     #                 return_deque.appendleft(current_node.left.value)
     #             if current_node.right is not None:
@@ -293,7 +297,6 @@ def swapNodes(indexes_in, queries_in):
     #     return list(return_deque)
 
     # def swap_iterative(root_to_swap, k_to_swap):
-
 
     # Now create the tree using the supplied indexes
     tree_root = create(root, indexes_in)

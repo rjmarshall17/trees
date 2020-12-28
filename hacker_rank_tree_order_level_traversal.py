@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 import os
+from collections import deque
 
 """
-Given a pointer to the root of a binary tree, you need to print the level order traversal of this tree. In level-order traversal, nodes are visited level by level from left to right. Complete the function  and print the values in a single line separated by a space.
+Given a pointer to the root of a binary tree, you need to print the level order traversal of this tree. 
+In level-order traversal, nodes are visited level by level from left to right. Complete the function  
+levelOrder and print the values in a single line separated by a space.
 
 For example:
 
@@ -15,7 +18,7 @@ For example:
        3    6
         \
          4
-For the above tree, the level order traversal is .
+For the above tree, the level order traversal is 1->2->5->3->6->4.
 
 Input Format
 
@@ -24,9 +27,10 @@ You are given a function,
 void levelOrder(Node * root) {
 
 }
+
 Constraints
 
- Nodes in the tree
+1 <= Nodes in the tree <= 500 
 
 Output Format
 
@@ -51,6 +55,7 @@ Explanation
 
 We need to print the nodes level by level. We process each level from left to right.
 Level Order Traversal: 1->2->5->3->6->4
+
 """
 
 
@@ -70,7 +75,7 @@ class BinarySearchTree:
         self.root = None
 
     def create(self, val):
-        if self.root == None:
+        if self.root is None:
             self.root = Node(val)
         else:
             current = self.root
@@ -91,14 +96,16 @@ class BinarySearchTree:
                 else:
                     break
 
+
 def levelOrder(root):
-    level_queue = [root]
+    level_queue = deque()
+    level_queue.append(root)
     levels_traversed = 0
     results = []
     while len(level_queue) > 0:
         levels_traversed += 1
-        # Time complexity is: O(N-K) where K is the index to be popped
-        current_node = level_queue.pop(0)
+        # Because this is a deque, the time complexity for the popleft() is: O(1)
+        current_node = level_queue.popleft()
         if isinstance(current_node.info, list):
             results.append(str(current_node.info[0]))
         else:
@@ -115,6 +122,7 @@ if __name__ == '__main__':
     expected_output = os.environ['OUTPUT_PATH'].replace('output', 'expected_output')
 
     tree = BinarySearchTree()
+
     t = int(input())
 
     arr = list(map(int, input().split()))
@@ -128,8 +136,8 @@ if __name__ == '__main__':
     fptr.write('\n')
 
     fptr.close()
-    # print("         Output: >>%s<<" % ' '.join(map(str, results)))
-    # print("Expected output: >>%s<<" % open(expected_output, 'r').read().rstrip())
+    print("         Output: >>%s<<" % ' '.join(map(str, results)))
+    print("Expected output: >>%s<<" % open(expected_output, 'r').read().rstrip())
 
     assert ' '.join(map(str, results)) == open(expected_output, 'r').read().rstrip()
     print("Tests passed for: %s" % os.environ['OUTPUT_PATH'])
