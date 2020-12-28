@@ -1,0 +1,80 @@
+There are two types of tree traversal:
+
+Depth First Search - which uses a stack
+Breadth First Search - whicih uses a queue
+
+
+Depth First                 Breadth First
+-----------                 -------------
+1. Pre-Order                1. Level-Order
+2. In-Order
+3. Post-Order
+
+==========
+Pre-Order:
+
+Time complexity is O(n) because we visit each node once
+
+1. Visit Node
+2. Traverse Left
+3. Traverse Right
+
+Pseudocode:
+
+preorder(node)
+    if node == null then return
+    visit(node)
+    preorder(node.left)
+    preorder(node.right)
+
+=========
+In-Order:
+
+Time complexity for inorder is O(n) since you visit each node once
+
+1. Traverse left
+2. Visit node
+3. Traverse right
+
+Pseudocode:
+
+inorder(node)
+    if node == null then return
+    inorder(node.left)
+    visit(node)
+    inorder(node.right)
+
+===========
+Post-Order:
+
+Time complexity is O(n) because we visit each node once
+
+1. Traverse Left
+2. Traverse Right
+3. Visit Node
+
+Pseudocode:
+
+postorder(node)
+    if node == null then return
+    postorder(node.left)
+    postorder(node.right)
+    visit(node)
+
+============ Breadth First instead of Depth First
+Use an iterative approach rather then recursive, the above were all recursive
+
+Level-Order:
+
+Time complexity is O(n) because we visit each node once
+Pseudocode:
+levelorder(root)
+    q <- empty queue
+    q.enqueue(root)
+    while (not q.isEmpty())
+        node <- q.dequeue()
+        visit(node)
+        if (node.left != null)
+            q.enqueue(node.left)
+        if (node.right != null)
+            q.enqueue(node.right)
