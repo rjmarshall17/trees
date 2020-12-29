@@ -8,6 +8,12 @@ class TreeNode:
         self.left = None
         self.right = None
 
+    def __str__(self):
+        ret = str(self.val)
+        ret += " left: %s" % ("None" if self.left is None else str(self.left.val))
+        ret += " right: %s" % ("None" if self.right is None else str(self.right.val))
+        return ret
+
 """
 236. Lowest Common Ancestor of a Binary Tree
 
@@ -63,6 +69,14 @@ p != q
 p and q will exist in the tree.
 """
 
+def print_tree(tree):
+    if tree is None:
+        return
+    print("%s" % tree)
+    print_tree(tree.left)
+    print_tree(tree.right)
+
+
 """
 A recursive solution for this challenge:
 
@@ -75,11 +89,15 @@ lowest_common_ancester(root, p, q)
 """
 
 def lowest_common_ancestor(root, p, q):
+    print("root=%s\n\tp=%s\n\tq=%s" % (root, p, q))
+    if root is None:
+        return None
     if p.val < root.val and q.val < root.val:
         return lowest_common_ancestor(root.left, p, q)
-    if p.val > root.val and q.val > root.val:
+    elif p.val > root.val and q.val > root.val:
         return lowest_common_ancestor(root.right, p, q)
-    return root
+    else:
+        return root
 
 bst1_tn0 = TreeNode(0)
 bst1_tn1 = TreeNode(1)
@@ -90,21 +108,23 @@ bst1_tn5 = TreeNode(5)
 bst1_tn6 = TreeNode(6)
 bst1_tn7 = TreeNode(7)
 bst1_tn8 = TreeNode(8)
+bst1_tn9 = TreeNode(9)
 
-bst1_tn3.left = bst1_tn5
-bst1_tn3.right = bst1_tn1
-bst1_tn5.left = bst1_tn6
-bst1_tn5.right = bst1_tn2
-bst1_tn1.left = bst1_tn0
-bst1_tn1.right = bst1_tn8
-bst1_tn2.left = bst1_tn7
+bst1_tn6.left = bst1_tn2
+bst1_tn6.right = bst1_tn8
+bst1_tn2.left = bst1_tn0
 bst1_tn2.right = bst1_tn4
-
+bst1_tn8.left = bst1_tn7
+bst1_tn8.right = bst1_tn9
+bst1_tn4.left = bst1_tn3
+bst1_tn4.right = bst1_tn5
 
 bst2_tn1 = TreeNode(1)
 bst2_tn2 = TreeNode(2)
 
 
 if __name__ == '__main__':
-    result = lowest_common_ancestor(bst1_tn3, bst1_tn5, bst1_tn4)
-    print("The result is: %s" % result.val)
+    print_tree(bst1_tn6)
+    print('='*80)
+    result = lowest_common_ancestor(bst1_tn6, bst1_tn2, bst1_tn4)
+    print("The result is: %s" % result)
