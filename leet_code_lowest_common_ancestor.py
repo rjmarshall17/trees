@@ -121,10 +121,15 @@ bst1_tn4.right = bst1_tn5
 
 bst2_tn1 = TreeNode(1)
 bst2_tn2 = TreeNode(2)
-
+bst2_tn2.left = bst2_tn1
 
 if __name__ == '__main__':
     print_tree(bst1_tn6)
     print('='*80)
     result = lowest_common_ancestor(bst1_tn6, bst1_tn2, bst1_tn4)
     print("The result is: %s" % result)
+    print_tree(bst2_tn2)
+    print('='*80)
+    result = lowest_common_ancestor(bst2_tn2, bst2_tn2, bst2_tn1)
+    print("The result is: %s" % result)
+
