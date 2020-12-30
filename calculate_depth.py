@@ -38,6 +38,7 @@ TREES = [
 
 def nodeDepths(root):
     sum_of_depths = 0
+    print("root is of type: %s" % type(root))
     stack = [(0, root)]
     while len(stack) > 0:
         depth, node = stack.pop()

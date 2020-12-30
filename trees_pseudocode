@@ -3,9 +3,18 @@ Tree data structure:
 
 Create a node class
     Class node
-        self.value/data
-        self.left
-        self.right
+        __init__ with value/data as input
+            self.value/data
+            self.left
+            self.right
+
+        The __str__ function must always return a string
+
+        __str__ with self as input
+            ret = str(self.value)
+            ret += ' left: ' + str(self.left.value) if self.left is not None else "None"
+            ret += ' right: ' + str(self.right.value) if self.right is not None else "None"
+            return ret
 
 Create a Binary Search Tree class that will use the node class
 In __init__ set self.root = None
@@ -157,8 +166,10 @@ Create a count partial method that will return the number of words in the trie t
         Set current node to current node[letter]
     return current node['count']
 
-Hacker Rank Contacts Challenge:
--------------------------------
+Hacker Rank Challenges:
+-----------------------
+
+Contacts:
 
 Create a function that will create/use a trie to store any provided contacts and allow for
 finding any contacts that are in the trie. A list of queries will be provided to the function
@@ -175,3 +186,24 @@ for query in queries
         If found append value to results
     return results
 
+Height of a Binary Tree:
+
+Create a function that contains a function that can be used recursively to determine the height of a
+binary tree. The outer function will accept a tree as input. The inner function will take the current
+node as well as the current height as input.
+
+Outer function height takes a tree as input
+    Inner function __height__ takes current node and current height as input
+        If the current node is None
+            return the current height
+        Set left height to call to inner function with current node .left and current height + 1
+        Set right height to call to inner function with current node .right and current height + 1
+        return the max of left height or right height
+    return __height__ root, -1
+
+Swap Nodes:
+
+The idea behind this challenge is to swap nodes in a binary tree based on being at the correct
+level based on the value provided.
+
+Create a function, swap nodes, that will take a list of indexes/nodes to create and

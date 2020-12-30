@@ -197,36 +197,36 @@ class Node:
         ret += " right: " + (str(self.right.value) if self.right is not None else "None")
         return ret
 
+    def __pre_order__(self, node, return_list):
+        if node is None:
+            return
+        return_list.append(node.value)
+        self.__in_order__(node.left, return_list)
+        self.__in_order__(node.right, return_list)
 
-# def inOrder(root):
-#     # Set current to root of binary tree
-#     current = root
-#     stack = []  # initialize stack
-#     while True:
-#         print("inOrder: Start of while loop, current: %s" % current)
-#         print("inOrder: Start of while loop the stack (length: %d) is: %s" %
-#               (len(stack), ",".join([str(x) for x in stack])))
-#         # Reach the left most Node of the current Node
-#         if current is not None:
-#             # Place pointer to a tree node on the stack
-#             # before traversing the node's left subtree
-#             stack.append(current)
-#             print("inOrder: Current appended to stack: %s" % current)
-#             current = current.left
-#
-#             # BackTrack from the empty subtree and visit the Node
-#         # at the top of the stack; however, if the stack is
-#         # empty you are done
-#         elif stack:
-#             current = stack.pop()
-#             print("inOrder: *** popped *** current: %s" % current)  # Python 3 printing
-#
-#             # We have visited the node and its left
-#             # subtree. Now, it's right subtree's turn
-#             current = current.right
-#         # Seem to be all done, exit the while loop
-#         else:
-#             break
+    def __in_order__(self, node, return_list):
+        if node is None:
+            return
+        self.__in_order__(node.left, return_list)
+        return_list.append(node.value)
+        self.__in_order__(node.right, return_list)
+
+    def __post_order__(self, node, return_list):
+        if node is None:
+            return
+        self.__in_order__(node.left, return_list)
+        self.__in_order__(node.right, return_list)
+        return_list.append(node.value)
+
+    def do_traversal(self, order_type='in-order'):
+        return_list = []
+        if order_type == 'pre-order':
+            self.__pre_order__(self, return_list)
+        elif order_type == 'in-order':
+            self.__in_order__(self, return_list)
+        elif order_type == 'post-order':
+            self.__post_order__(self, return_list)
+        return return_list
 
 
 #
@@ -266,43 +266,14 @@ def swapNodes(indexes_in, queries_in):
             return_list.append(root_to_swap.value)
             swap_recursive(root_to_swap.right, k_to_swap, level + 1, return_list)
 
-    # def swap_iterative(root_to_swap, k_to_swap):
-    #     # print("Using iterative")
-    #     print("The incoming value of k is: %d" % k)
-    #     current_level = 1
-    #     # print("The root to swap is: %s" % root_to_swap)
-    #     swap_queue = deque([root_to_swap])
-    #     return_deque = deque()
-    #     return_deque.append(root_to_swap.value)
-    #     while len(swap_queue) > 0:
-    #         current_node = swap_queue.popleft()
-    #         # print("For current_level %d current node is: %s" % (current_level, current_node))
-    #         if current_node:
-    #             print("swap_iterative: The current node is: %s" % current_node)
-    #             print("swap_iterative: current_level (%d) %% k_to_swap (%d) = %d" % (current_level,
-    #                                                                                  k_to_swap,
-    #                                                                                  current_level % k_to_swap))
-    #             if current_level % k_to_swap == 0:
-    #                 # print("Swapping at current_level %d" % current_level)
-    #                 current_node.left, current_node.right = current_node.right, current_node.left
-    #                 print("swap_iterative: Post swap, current_level=%d the current node is: %s" %
-    #                       (current_level, current_node))
-    #             if current_node.left is not None:
-    #                 return_deque.appendleft(current_node.left.value)
-    #             if current_node.right is not None:
-    #                 return_deque.append(current_node.right.value)
-    #             swap_queue.append(current_node.left)
-    #             swap_queue.append(current_node.right)
-    #         current_level += 1
-    #     return list(return_deque)
-
-    # def swap_iterative(root_to_swap, k_to_swap):
-
     # Now create the tree using the supplied indexes
     tree_root = create(root, indexes_in)
-    # print("After create, the original tree is:")
-    # inOrder(tree_root)
-    # print("="*80)
+    current_tree = tree_root.do_traversal('pre-order')
+    print(" The current pre-order tree post create is: %s" % current_tree)
+    current_tree = tree_root.do_traversal('in-order')
+    print("  The current in-order tree post create is: %s" % current_tree)
+    current_tree = tree_root.do_traversal('post-order')
+    print("The current post-order tree post create is: %s" % current_tree)
 
     # Now process the queries which will swap nodes, k is the value
     # from the problem description used to denote the level for each
@@ -312,14 +283,6 @@ def swapNodes(indexes_in, queries_in):
         recursive_swapped_values = []
         swap_recursive(tree_root, k, 1, recursive_swapped_values)
         return_results.append(recursive_swapped_values)
-        # print("After swapping nodes the tree is:")
-        # inOrder(tree_root)
-
-        # return_results.append(swap_iterative(tree_root, k))
-
-        # print("The recursive swapped values are: %s" % recursive_swapped_values)
-        # print("The iterative swapped values are: %s" % iterative_swapped_values)
-        # print("The current return results is: %s" % return_results)
     return return_results
 
 
