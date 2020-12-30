@@ -42,6 +42,7 @@ class Trie:
             current_node = current_node[letter]
         return current_node['count']
 
+
 if __name__ == '__main__':
     trie = Trie()
     trie.add('hello')
@@ -49,9 +50,9 @@ if __name__ == '__main__':
     trie.add('application')
     trie.add('testing')
     trie.add('test')
-    assert trie.search('test') == True
-    assert trie.search('hello') == True
-    assert trie.search('hi') == False
-    assert trie.search('app') == False
-    assert trie.find_prefix('app') == True
+    assert trie.search('test') is True
+    assert trie.search('hello') is True
+    assert trie.search('hi') is False
+    assert trie.search('app') is False
+    assert trie.find_prefix('app') is True
     print("All tests passed")

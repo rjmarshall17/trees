@@ -1,7 +1,39 @@
+Tree data structure:
+--------------------
+
+Create a node class
+    Class node
+        self.value/data
+        self.left
+        self.right
+
+Create a Binary Search Tree class that will use the node class
+In __init__ set self.root = None
+Add a create method that accepts a value/data - time complexity O(logN) where N is number of nodes in tree
+    if self.root is None
+        self.root = Node(value/data)
+    else
+        Set current to self.root
+        while True
+            if value < current.value
+                if current.left is not None
+                    current = current.left
+                else
+                    current.left = Node(value)
+                    break
+            else if value > current.value
+                if current.right is not None
+                    current = current.right
+                else
+                    current.right = Node(value)
+                    break
+            else
+                break
+
 There are two types of tree traversal:
 
 Depth First Search - which uses a stack
-Breadth First Search - whicih uses a queue
+Breadth First Search - which uses a queue
 
 
 Depth First                 Breadth First
@@ -68,7 +100,7 @@ Level-Order:
 
 Time complexity is O(n) because we visit each node once
 Pseudocode:
-levelorder(root)
+level_order(root)
     q <- empty queue
     q.enqueue(root)
     while (not q.isEmpty())
@@ -78,3 +110,68 @@ levelorder(root)
             q.enqueue(node.left)
         if (node.right != null)
             q.enqueue(node.right)
+
+Trie data structure:
+--------------------
+A trie can be implemented with a dictionary in the __init__ function. Each letter in the dictionary will
+also have a count of the number of words that are linked with this letter. Determine some character to
+use to signify the end of a word, e.g. '*'
+
+Initialization self.root <- {} - a defaultdict would work as well
+Create an add method
+    Set current node to self.root
+    for letter in incoming word
+        if letter is NOT in current node
+            add letter to current node with {"count":0}
+        Set current node to current_node[letter]
+        Increment the "count" for the letter by 1
+    When done adding word, add the word terminator character to current node and set its value to True
+
+Create a search method that will look for whole words
+    Accept a word as input
+    Set current node to self.root
+    For letter in supplied partial
+        if letter not in current node
+            return False
+        Set current node to current node[letter]
+    If we reach the end of the search value but are not at the end of a word
+        return False
+    else
+        return True
+
+Create a prefix method
+    Accept a prefix as input
+    Set the current node to self.root
+    for letter in prefix
+        if letter not in current node
+            return False
+        Set current node to current node[letter]
+    At end of for loop, return True
+
+Create a count partial method that will return the number of words in the trie that contain the partial
+    Accept a partial, i.e. prefix, as input
+    Set the current node to self.root
+    for letter in partial
+        if letter not in current node
+            return 0
+        Set current node to current node[letter]
+    return current node['count']
+
+Hacker Rank Contacts Challenge:
+-------------------------------
+
+Create a function that will create/use a trie to store any provided contacts and allow for
+finding any contacts that are in the trie. A list of queries will be provided to the function
+that are in the format: (query type, value). The query type can be either "add" or "find".
+
+Accept a list of queries as input
+Create a trie
+Set up a results list
+for query in queries
+    if type is add
+        trie.add query value
+    else if type is find
+        trie.find query value
+        If found append value to results
+    return results
+

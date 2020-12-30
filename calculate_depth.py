@@ -44,8 +44,10 @@ def nodeDepths(root):
         if node is None:
             continue
         sum_of_depths += depth
-        stack.append((depth + 1, node.left))
-        stack.append((depth + 1, node.right))
+        if 'left' in node:
+            stack.append((depth + 1, node['left']))
+        if 'right' in node:
+            stack.append((depth + 1, node['right']))
     return sum_of_depths
 
 
@@ -59,6 +61,7 @@ def buildTree(tree):
             tree_nodes[node['id']].right = BinaryTree(node['right'])
         print(tree_nodes[node['id']])
     return tree_nodes, tree['root']
+
 
 if __name__ == '__main__':
     for tree in TREES:
