@@ -110,7 +110,7 @@ def print_tree(tree):
         output = ' '*(2**i)
         # print('levels[%d]=%s' % (level, levels[level]))
         for node in levels[level]:
-            output += str(node.val) if node is not None else ' '
+            output += '{}'.format(node.val) if node is not None else ' '
             output += between
         print(output)
         level += 1
