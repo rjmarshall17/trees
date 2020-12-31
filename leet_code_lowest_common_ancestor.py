@@ -2,6 +2,7 @@
 
 from typing import List
 
+
 class TreeNode:
     def __init__(self, x):
         self.val = x
@@ -14,10 +15,18 @@ class TreeNode:
         ret += " right: %s" % ("None" if self.right is None else str(self.right.val))
         return ret
 
+
 """
 236. Lowest Common Ancestor of a Binary Tree
 
 Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+
+From Wikipedia:
+
+In graph theory and computer science, the lowest common ancestor (LCA) of two nodes v and w in 
+a tree or directed acyclic graph (DAG) T is the lowest (i.e. deepest) node that has both v and
+w as descendants, where we define each node to be a descendant of itself (so if v has a direct
+connection from w, w is the lowest common ancestor).
 
 According to the definition of LCA on Wikipedia: ?The lowest common ancestor is defined between 
 two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow 
@@ -69,6 +78,7 @@ p != q
 p and q will exist in the tree.
 """
 
+
 def print_tree(tree):
     if tree is None:
         return
@@ -80,13 +90,14 @@ def print_tree(tree):
 """
 A recursive solution for this challenge:
 
-lowest_common_ancester(root, p, q)
+lowest_common_ancestor(root, p, q)
     if p < root and q < root
         lowest_common_ancestor(root.left, p, q)
     if p > root and q > root
-        lowest_common_ancester(root.right, p, q)
+        lowest_common_ancestor(root.right, p, q)
     return root - At this point, this should be the lowest common ancestor
 """
+
 
 def lowest_common_ancestor(root, p, q):
     print("root=%s\n\tp=%s\n\tq=%s" % (root, p, q))
@@ -98,6 +109,7 @@ def lowest_common_ancestor(root, p, q):
         return lowest_common_ancestor(root.right, p, q)
     else:
         return root
+
 
 bst1_tn0 = TreeNode(0)
 bst1_tn1 = TreeNode(1)
@@ -122,6 +134,7 @@ bst1_tn4.right = bst1_tn5
 bst2_tn1 = TreeNode(1)
 bst2_tn2 = TreeNode(2)
 bst2_tn2.left = bst2_tn1
+
 
 if __name__ == '__main__':
     print_tree(bst1_tn6)

@@ -448,4 +448,30 @@ Heap class
         heap[i], heap[j] = heap[j], heap[i]
 
 
+Lowest Common Ancestor:
+-----------------------
 
+Technically this can be either on a graph or a tree, but I'll leave it here for now.
+
+From Wikipedia:
+
+In graph theory and computer science, the lowest common ancestor (LCA) of two nodes v and w in a tree
+or directed acyclic graph (DAG) T is the lowest (i.e. deepest) node that has both v and w as descendants,
+where we define each node to be a descendant of itself (so if v has a direct connection from w, w is the
+lowest common ancestor).
+
+We use a recursive function to implement this. The worst case time complexity will be O(n) since it is
+possible that we will need to go through all nodes in the tree/graph. The idea behind the code below is:
+If both the nodes, for which we are trying to determine their lowest common ancestor (i.e. the common
+ancestor closest to both of them) are less then the root node we were given, then we need to continue
+to descend the left branch of the tree/graph. If they are both greater than the root, then we need to
+descent the right branch of the tree/graph. If neither of those conditions is true, then we have reached
+the point at which we would need to descend different branches, i.e. we have arrived at the lowest common
+ancestor of the two nodes.
+
+lowest_common_ancestor(root, p, q)
+    if p < root and q < root
+        lowest_common_ancestor(root.left, p, q)
+    if p > root and q > root
+        lowest_common_ancestor(root.right, p, q)
+    return root - At this point, this should be the lowest common ancestor
