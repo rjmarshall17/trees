@@ -64,7 +64,6 @@ class Node:
         self.info = info
         self.left = None
         self.right = None
-        self.level = None
 
     def __str__(self):
         return str(self.info)
@@ -74,7 +73,7 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 
-    def create(self, val):
+    def add(self, val):
         if self.root is None:
             self.root = Node(val)
         else:
@@ -106,10 +105,7 @@ def levelOrder(root):
         levels_traversed += 1
         # Because this is a deque, the time complexity for the popleft() is: O(1)
         current_node = level_queue.popleft()
-        if isinstance(current_node.info, list):
-            results.append(str(current_node.info[0]))
-        else:
-            results.append(str(current_node.info))
+        results.append(str(current_node.info))
         if current_node.left is not None:
             level_queue.append(current_node.left)
         if current_node.right is not None:
@@ -128,7 +124,7 @@ if __name__ == '__main__':
     arr = list(map(int, input().split()))
 
     for i in range(t):
-        tree.create(arr[i])
+        tree.add(arr[i])
 
     results = levelOrder(tree.root)
 

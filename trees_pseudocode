@@ -284,3 +284,66 @@ Append query to list of queries
 Call swap nodes and assign results
 Check that the results matches the expected results
 
+Level Order Traversal:
+----------------------
+
+Create a binary tree and do a level-order traversal, i.e. breadth first search, of the tree and display
+the node values.
+
+Node class
+    __init__ parameter is the value/data for the node
+        .value = value
+        .left = None
+        .right = None
+
+    __str__(self)
+        return a string of self.value
+
+Binary Search Tree class
+    __init__ no parameters
+        self.root = None
+
+    Add node to tree function with parameter value
+        if self root is None
+            self root = Node of the supplied value
+        else
+            current = self.root
+            while True
+                if value < current value
+                    if there is a node at current .left
+                        current = current .left
+                    else
+                        current .left = Node of the supplied value
+                        exit while loop
+                else if value > current value
+                    if there is a node at current .right
+                        current = current .right
+                    else
+                        current .right = Node of supplied value
+                        exit while loop
+                else, i.e. the value == the current value and there is nothing to do
+                    exit while loop
+
+Level Order traversal function parameter is the root of the tree
+    Create queue, use deque because popleft has a time complexity of O(1)
+    Add root to the queue
+    Create the results list
+    while the queue is not empty
+        current <- popleft from queue
+        append current node value to results list
+        if current node .left is not None
+            append current node .left to queue
+        if current node .right is not None
+            append current node .right to queue
+
+main function
+    Create the Binary Search Tree
+    Read the input which is:
+        first line is the number of nodes for the tree
+        second line is a string of X, based on first line value, of values to add to the tree
+        read second line into a list of values
+    for index in list of values
+         Add value at index to Binary Search Tree
+    results <- Call Level Order traversal function with tree .root
+    Check if results match expected results
+
