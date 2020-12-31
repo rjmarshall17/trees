@@ -347,3 +347,105 @@ main function
     results <- Call Level Order traversal function with tree .root
     Check if results match expected results
 
+Heap Implementation:
+--------------------
+
+From wikipedia:
+
+In computer science, a heap is a specialized tree-based data structure which is essentially an
+almost complete[1] tree that satisfies the heap property: in a max heap, for any given node C,
+if P is a parent node of C, then the key (the value) of P is greater than or equal to the key
+of C. In a min heap, the key of P is less than or equal to the key of C.[2] The node at the
+"top" of the heap (with no parents) is called the root node.
+
+A heap can be represented as a "complete" tree. All the levels are full
+except the last level. For a min heap, every node's value is <= the values of
+the child nodes. For a max heap, every node's value is >= the values of its
+child nodes.
+
+A heap in Python is represented as a list. To find the children of a node
+you take the index: i, and multiply it by two and add either 1, or 2, to
+the value, i.e.
+
+Child1 = 2i + 1
+Child2 = 2i + 2
+
+To find the parent of a node, you take the floor (integer result rounded down) of
+the child index minus 1 divided by 2, i.e.:
+
+Parent = (i - 1)//2
+
+The list, or tree, is not sorted but the root node is either the smallest
+number, for a min heap, or the largest number, for a max heap, in the tree/
+list.
+
+Time complexity: for pop/peek: O(1) for push O(logN)
+
+Heap class
+    __init__ will accept a list of values to initially populate the heap
+        self.heap <- incoming list of values
+        Call self.build_heap function to heapify the list
+
+    __repr/str__
+        return str(list(self.heap))
+
+    __iter__
+        In python iter calls the next method on the class, so here we just return self
+
+    __next__
+        if self is empty
+            return StopIteration
+        return self.pop()
+
+    build_heap
+        parent index <- length of heap - 1 // 2 (integer division/floor)
+        for index in range of parent index to 0, i.e. reverse order
+            Call minimum sift down with index and length of the heap - 1
+
+    minimum sift down called with current index and end index
+        child1 index <- current index * 2 + 1
+        while child1 index <= end index
+            child2 index <- current index * 2 + 2 if current index * 2 + 2 < end index else -1
+            if child2 index != -1 and heap value at child2 index < heap value at child1 index
+                index to swap <- child2 index
+            else
+                index to swap <- child1 index
+            if heap value at index to swap < heap value at current index
+                Call swap with current index, index to swap
+                current index <- index to swap
+                child1 index <- current index * 2 + 1
+            else i.e. nothing to swap
+                exit while loop
+
+    minimum sift up parameter current index
+        parent index <- (current index - 1) // 2 (integer division, floor)
+        while current index > 0 and heap value at current index < heap value at parent index
+            Call swap with current index and parent index
+            current index <- parent index
+            parent index <- (current index - 1) // 2 (integer division, floor)
+
+    peek
+        return self.heap[0] value
+
+    empty
+        return self.heap == []
+
+    push parameters new value
+        Append new value to end of heap
+        Call minimum sift up with length of heap - 1, i.e. the newly appended value
+
+    pop
+        if heap is empty
+            return None
+        # To remove the minimum value, we first move it to the end of the heap and then pop it off and return it
+        Call swap with index 0 with the end of the heap, i.e. len(heap) - 1
+        return value <- heap .pop()
+        # The call to minimum sift down will reorder the heap so that the smallest value will be at
+        # index 0 again and the other elements will adhere to the heap property
+        Call minimum sift down with current index <- 0 and end index <- len(heap) - 1
+
+    swap parameters i and j (index 1 and index 2)
+        heap[i], heap[j] = heap[j], heap[i]
+
+
+

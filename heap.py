@@ -11,34 +11,35 @@ MAXIMUM_HEAP_LIST = [98, 96, 95, 92, 91, 89, 87, 85, 83, 75, 73, 69, 67, 65, 62,
 
 
 class MyHeap:
-    """A heap can be represented as a "complete" tree. All the levels are full
-except the last level. For a min heap, every nodes value is <= the values of
-the child nodes. For a max heap, every nodes value is >= the values of its
-child nodes.
+    """
+    A heap can be represented as a "complete" tree. All the levels are full
+    except the last level. For a min heap, every nodes value is <= the values of
+    the child nodes. For a max heap, every nodes value is >= the values of its
+    child nodes.
 
-A heap in Python is represented as a list. To find the children of a node
-you take the index: i, and multiply it by two and add either 1, or 2, to
-the value, i.e.
+    A heap in Python is represented as a list. To find the children of a node
+    you take the index: i, and multiply it by two and add either 1, or 2, to
+    the value, i.e.
 
-Child1 = 2i + 1
-Child2 = 2i + 2
+    Child1 = 2i + 1
+    Child2 = 2i + 2
 
-To find the parent of a node, you take the floor (result rounded down) of the
-index minus 1 divided by 2, i.e.:
+    To find the parent of a node, you take the floor (integer result rounded down)
+    of the child index minus 1 divided by 2, i.e.:
     
-Parent = (i - 1)//2
+    Parent = (i - 1)//2
 
-The list, or tree, is not sorted but the root node is either the smallest
-number, for a min heap, or the largest number, for a max heap, in the tree/
-list.
+    The list, or tree, is not sorted but the root node is either the smallest
+    number, for a min heap, or the largest number, for a max heap, in the tree/
+    list.
 
-Time complexity: for pop/peek: O(1) for push O(logN)
-"""
+    Time complexity: for pop/peek: O(1) for push O(logN)
+    """
 
     def __init__(self, array, min=True):
         self.heap = array[:]
         self.min = min
-        self.buildHeap()
+        self.build_heap()
 
     def __repr__(self):
         return str(list(self.heap))
@@ -52,19 +53,19 @@ Time complexity: for pop/peek: O(1) for push O(logN)
     def __next__(self):
         if self.empty():
             raise StopIteration
-        return self.remove()
+        return self.pop()
 
     # Runs in O(N) time O(1) space, done in place
-    def buildHeap(self):
+    def build_heap(self):
         parent_idx = (len(self.heap) - 1) // 2
         for cur_idx in range(parent_idx, -1, -1):
             if self.min:
-                self.minSiftDown(cur_idx, len(self.heap) - 1)
+                self.minimum_sift_down(cur_idx, len(self.heap) - 1)
             else:
-                self.maxSiftDown(cur_idx, len(self.heap) - 1)
+                self.maximum_sift_down(cur_idx, len(self.heap) - 1)
 
     # Runs in O(logN)
-    def minSiftDown(self, cur_idx, end_idx):
+    def minimum_sift_down(self, cur_idx, end_idx):
         child1_idx = cur_idx * 2 + 1
         while child1_idx <= end_idx:
             child2_idx = cur_idx * 2 + 2 if cur_idx * 2 + 2 <= end_idx else -1
@@ -82,7 +83,7 @@ Time complexity: for pop/peek: O(1) for push O(logN)
                 break
 
     # Runs in O(logN)
-    def maxSiftDown(self, cur_idx, end_idx):
+    def maximum_sift_down(self, cur_idx, end_idx):
         child1_idx = cur_idx * 2 + 1
         while child1_idx <= end_idx:
             child2_idx = cur_idx * 2 + 2 if cur_idx * 2 + 2 <= end_idx else -1
@@ -100,7 +101,7 @@ Time complexity: for pop/peek: O(1) for push O(logN)
                 break
 
     # Runs in O(logN)
-    def minSiftUp(self, cur_idx):
+    def minimum_sift_up(self, cur_idx):
         parent_idx = (cur_idx - 1) // 2
         # For max heap change comparison if cur_idx and parentIx to >
         while cur_idx > 0 and self.heap[cur_idx] < self.heap[parent_idx]:
@@ -109,7 +110,7 @@ Time complexity: for pop/peek: O(1) for push O(logN)
             parent_idx = (cur_idx - 1) // 2
 
     # Runs in O(logN)
-    def maxSiftUp(self, cur_idx):
+    def maximum_sift_up(self, cur_idx):
         parent_idx = (cur_idx - 1) // 2
         # For max heap change comparison if cur_idx and parentIx to >
         while cur_idx > 0 and self.heap[cur_idx] > self.heap[parent_idx]:
@@ -126,9 +127,9 @@ Time complexity: for pop/peek: O(1) for push O(logN)
     def push(self, value):
         self.heap.append(value)
         if self.min:
-            self.minSiftUp(len(self.heap) - 1)
+            self.minimum_sift_up(len(self.heap) - 1)
         else:
-            self.maxSiftUp(len(self.heap) - 1)
+            self.maximum_sift_up(len(self.heap) - 1)
         
     def pop(self):
         if not self.heap:
@@ -136,9 +137,9 @@ Time complexity: for pop/peek: O(1) for push O(logN)
         self.__swap__(0, len(self.heap) - 1)
         ret = self.heap.pop()
         if self.min:
-            self.minSiftDown(0, len(self.heap) - 1)
+            self.minimum_sift_down(0, len(self.heap) - 1)
         else:
-            self.maxSiftDown(0, len(self.heap) - 1)
+            self.maximum_sift_down(0, len(self.heap) - 1)
         return ret
     
     def __swap__(self, i, j):
