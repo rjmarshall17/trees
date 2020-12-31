@@ -187,6 +187,7 @@ for query in queries
     return results
 
 Height of a Binary Tree:
+------------------------
 
 Create a function that contains a function that can be used recursively to determine the height of a
 binary tree. The outer function will accept a tree as input. The inner function will take the current
@@ -202,8 +203,84 @@ Outer function height takes a tree as input
     return __height__ root, -1
 
 Swap Nodes:
+-----------
 
-The idea behind this challenge is to swap nodes in a binary tree based on being at the correct
-level based on the value provided.
+The idea behind this challenge is to swap nodes in a binary tree at specific levels that are
+multiples of a provided value, k. i.e. If originally there was a left subtree, it should be
+swapped to be a right subtree and any right subtree should be swapped to be a left subtree.
+The input to the function will be a list of indexes that will be used to create the tree and
+a list of queries to control changes to the tree, i.e. nodes to be swapped. The value of the
+root node is always 1, and it is assumed and not provided in the input. The input is a list
+where the initial value is the number of indexes/queries that follow, and then the specific
+number of values follow it. e.g.
 
-Create a function, swap nodes, that will take a list of indexes/nodes to create and
+3
+2 3
+-1 -1
+-1 -1
+2
+1
+
+The -1 indicates there is no subtree at that location, so the above input results in a tree
+that looks like:
+
+    1
+   2 3
+
+The root node is at level 1.
+
+Create a function, swap nodes, that will take a list of indexes/nodes to create and a list of
+queries to execute on the tree. The function will contain functions to create the tree and one
+to execute the queries, i.e. swap the nodes. The swap nodes function will be recursive and will
+perform an inorder traversal of the tree, i.e. first visit all left nodes, then the node itself,
+and then the right nodes.
+
+Swap nodes will have two input lists, the indexes to be created and the queries to execute
+
+Create function will accept the root node and a list of left/right values
+    Create a queue (deque) and put the root node as a list in the queue
+    for left, right in indexes
+        pop current node from queue
+        if left != -1
+            current node .left = Node(left)
+            append current node .left to the queue
+        if right != -1
+            current node .right = Node(right)
+            append current node .right to the queue
+    return the root node
+
+The recursive swap function will accept the tree root, k which is the integer determining the levels (multiples
+    of k) where the swaps are to occur, the current level and the return list, i.e. the inorder traversal of the
+    nodes after the swaps
+    if there is a root node
+        if our current level is a multiple of k
+            root.left, root.right = root.right, root.left
+        Call swap recursive with root .left, k, level + 1, return list
+        append current node value to return list
+        Call swap recursive with root .right, k, level + 1, return list
+
+Create the start of the tree by creating the root node with value 1
+Create the tree
+Set up the return list
+for k in queries to be execute
+    Create list for inorder traversal during swaps
+    Call swap recursive with tree root, k, 1 (level = 1), list for inorder traversal during swap
+    Append list from inorder traversal to return list
+return the return list
+
+In the main function
+Read the first value from the input, i.e. the number of indices for the tree
+Create indexes list
+Read X values into the list of indices for tree creation
+    Each line of the input contains the left and right node values or -1 if no node
+    Strip and split the line and convert the values to integers
+    Append the left and right values as a list to the indexes
+Read the count for the queries
+Create queries list
+Read X queries as integers
+    Each line is a single integer for k
+    Append to the list of queries
+Append query to list of queries
+Call swap nodes and assign results
+Check that the results matches the expected results
+

@@ -110,7 +110,8 @@ Sample Output 0
 
 Explanation 0
 
-As nodes 2 and 3 have no children, swapping will not have any effect on them. We only have to swap the child nodes of the root node.
+As nodes 2 and 3 have no children, swapping will not have any effect on them. We only have to swap the child 
+nodes of the root node.
 
     1   [s]       1    [s]       1   
    / \      ->   / \        ->  / \  
