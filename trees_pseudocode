@@ -1,6 +1,5 @@
 Tree data structure:
 --------------------
-
 Create a node class
     Class node
         __init__ with value/data as input
