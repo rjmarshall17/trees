@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 
-WORD_TERMINATOR = '*'
 
-
+# Let's look at time complexities:
+# For building the trie the time complexity is: O(nm) where n is the number
+# of keys in the trie and m is the length of the longest key.
+# For searching, inserting and deleting the time is: O(an) where n is the
+# total number of words in the trie and a is the length of the word being
+# searched, inserted or deleted.
 class Trie:
+    WORD_TERMINATOR = '*'
+
     def __init__(self):
         self.root = {}
 
@@ -14,7 +20,7 @@ class Trie:
                 current_node[letter] = {'count':0}
             current_node = current_node[letter]
             current_node['count'] += 1
-        current_node[WORD_TERMINATOR] = True
+        current_node[Trie.WORD_TERMINATOR] = True
 
     def search(self, word):
         current_node = self.root
@@ -22,7 +28,7 @@ class Trie:
             if letter not in current_node:
                 return False
             current_node = current_node[letter]
-        if WORD_TERMINATOR not in current_node:
+        if Trie.WORD_TERMINATOR not in current_node:
             return False
         return True
 
