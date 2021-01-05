@@ -48,10 +48,9 @@ names in the application but neither of them start with hak, so we print  on a n
 """
 
 
-WORD_TERMINATOR = '*'
-
-
 class Trie:
+    WORD_TERMINATOR = '*'
+
     def __init__(self):
         self.root = {}
 
@@ -62,7 +61,7 @@ class Trie:
                 current_node[letter] = {'count':0}
             current_node = current_node[letter]
             current_node['count'] += 1
-        current_node[WORD_TERMINATOR] = True
+        current_node[Trie.WORD_TERMINATOR] = True
 
     def find_partial(self, partial):
         current_node = self.root
