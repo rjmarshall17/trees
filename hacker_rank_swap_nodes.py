@@ -4,7 +4,8 @@ import os
 import sys
 from collections import deque
 
-sys.setrecursionlimit(10000)
+# Don't need to set the recursion limit for these examples
+# sys.setrecursionlimit(10000)
 
 """
 A binary tree is a tree which is characterized by one of the following properties:
